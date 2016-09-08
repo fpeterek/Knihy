@@ -20,25 +20,25 @@
 
 FileNotOpenException::FileNotOpenException(std::string filename) {
     
-    _errorMessage = "File " + filename + " could not be opened. ";
+    _errorMessage = "Soubor " + filename + " se nepodařilo otevřít. ";
     
 }
 
-std::string FileNotOpenException::Message() {
+const char * FileNotOpenException::what() {
     
-    return _errorMessage;
+    return _errorMessage.c_str();
     
 }
 
 FileNotClosedException::FileNotClosedException(std::string filename) {
     
-    _errorMessage = "File " + filename + " could not be opened. ";
+    _errorMessage = "Soubor " + filename + " se nepodařilo zavřít. ";
     
 }
 
-std::string FileNotClosedException::Message() {
+const char * FileNotClosedException::what() {
     
-    return _errorMessage;
+    return _errorMessage.c_str();
     
 }
 
@@ -147,7 +147,7 @@ unsigned long FileHandler::BookCount() {
         if (i.format == "Kniha") ++books;
         
     }
- 
+    
     return books;
     
 }
@@ -172,7 +172,12 @@ unsigned int FileHandler::BookWeight() {
     
     for (auto & i : _items) {
         
-        if (i.format == "Kniha") weight += std::stoi(i.weight);
+        try {
+            
+            if (i.format == "Kniha") weight += std::stoi(i.weight);
+            
+        }
+        catch (std::invalid_argument e) { std::cerr << "Neplatná hodnota u objektu " << i.name << std::endl; continue; }
         
     }
     
@@ -191,12 +196,6 @@ Item FileHandler::NewestBook() {
     }
     
     return item;
-    
-}
-
-void EditIsbn() {
-    
-    
     
 }
 
@@ -240,7 +239,7 @@ void FileHandler::OutputToHtml() {
     
     for (auto & i : _items) {
         
-        if (CheckIsbn(i) == ISBN::Isbn_10) {
+        if (FileHandler::CheckIsbn(i) == ISBN::Isbn_10) {
             output << "<tr>";
             output << "<td>" << i.id << "</td>";
             output << "<td>" << i.name << "</td>";
@@ -258,7 +257,7 @@ void FileHandler::OutputToHtml() {
     
     for (auto & i : _items) {
         
-        if (CheckIsbn(i) == ISBN::Isbn_13) {
+        if (FileHandler::CheckIsbn(i) == ISBN::Isbn_13) {
             output << "<tr>";
             output << "<td>" << i.id << "</td>";
             output << "<td>" << i.name << "</td>";
@@ -270,7 +269,7 @@ void FileHandler::OutputToHtml() {
         }
         
     }
-
+    
     output << "</tbody></table></body></html>";
     
     std::ofstream outputFile;

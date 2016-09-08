@@ -32,7 +32,7 @@ class FileNotOpenException : public std::exception{
 public:
     
     FileNotOpenException(std::string filename);
-    std::string Message();
+    const char * what();
     
 };
 
@@ -43,7 +43,7 @@ class FileNotClosedException : public std::exception {
 public:
     
     FileNotClosedException(std::string filename);
-    std::string Message();
+    const char * what();
     
 };
 
@@ -98,7 +98,7 @@ public:
     unsigned int BookWeight();
     void EditIsbn();
     Item NewestBook();
-    ISBN CheckIsbn(Item &);
+    static ISBN CheckIsbn(Item &);
     
     void ParseLine(std::string &);
     void OutputToHtml();

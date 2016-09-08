@@ -10,11 +10,11 @@
 
 
 int main(int argc, const char * argv[]) {
-
+    
     FileHandler fh;
     
     try { fh.OpenFile("knihy.txt"); }
-    catch (FileNotOpenException e) { std::cout << e.Message() << std::endl; return -1; }
+    catch (FileNotOpenException e) { std::cout << e.what() << std::endl; return -1; }
     
     fh.ReadFile();
     
@@ -25,12 +25,12 @@ int main(int argc, const char * argv[]) {
     std::cout << "Nejnovější kniha: " << fh.NewestBook().name << std::endl;
     
     try { fh.OutputToHtml(); }
-    catch (FileNotOpenException e)      { std::cout << e.Message() << std::endl; return -1; }
-    catch (FileNotClosedException e)    { std::cout << e.Message() << std::endl; return -1; }
-
+    catch (FileNotOpenException e)      { std::cout << e.what() << std::endl; return -1; }
+    catch (FileNotClosedException e)    { std::cout << e.what() << std::endl; return -1; }
+    
     
     try { fh.CloseFile(); }
-    catch (FileNotClosedException e) { std::cout << e.Message() << std::endl; return -1; }
+    catch (FileNotClosedException e) { std::cout << e.what() << std::endl; return -1; }
     
     return 0;
     
